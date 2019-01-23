@@ -17,7 +17,7 @@ struct Movie {
 
 class RecommenderViewController: ViewController {
   
-    private let modelName:String = "Recommender.mlmodel.gz"
+    private let modelName:String = "Recommender.mlmodel"
     private var myRecommender:Recommender! = Recommender()
     private var detectionOverlay: CALayer! = nil
   
