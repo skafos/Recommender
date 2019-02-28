@@ -17,7 +17,7 @@ struct Movie {
 
 class RecommenderViewController: ViewController {
   
-    private let modelName:String = "Recommender.mlmodel.gz"
+    private let assetName:String = "RecommenderModel"
     private var myRecommender:Recommender! = Recommender()
     private var detectionOverlay: CALayer! = nil
   
@@ -39,8 +39,8 @@ class RecommenderViewController: ViewController {
       /***
        Receive Notification When New Model Has Been Downloaded And Compiled
        ***/
-      
-      NotificationCenter.default.addObserver(self, selector: #selector(RecommenderViewController.reloadModel(_:)), name: Skafos.Notifications.modelUpdateNotification(modelName), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(RecommenderViewController.reloadModel(_:)), name: Skafos.Notifications.assetUpdateNotification(assetName), object: nil)
   
       /** Receive Notifications for all model updates  **/
       //    NotificationCenter.default.addObserver(self, selector: #selector(MainViewController.reloadModel(_:)), name: Skafos.Notifications.modelUpdated, object: nil)
@@ -48,16 +48,15 @@ class RecommenderViewController: ViewController {
 
 
     @objc func reloadModel(_ notification:Notification) {
-      debugPrint("Model Reloaded")
-      debugPrint(notification)
-      Skafos.load(self.modelName) { (model) in
-        guard let model = model else {
-          print("No model available")
-          return
+        debugPrint("Model Reloaded")
+        debugPrint(notification)
+        Skafos.load(asset: self.assetName) { (error, asset) in
+            guard let model = asset.model else {
+                debugPrint("No model available")
+                return
+            }
+            self.myRecommender.model = model
         }
-  
-        self.myRecommender.model = model
-      }
     }
   
   @objc func recommendButtonAction(_ sender:Any? = nil) {
