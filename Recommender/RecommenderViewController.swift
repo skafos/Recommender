@@ -16,8 +16,8 @@ struct Movie {
 }
 
 class RecommenderViewController: ViewController {
-  
-    private let assetName:String = "Recommender.mlmodel.gz"
+    // This will be the asset name you use in drag and drop on the dashboard
+    private let assetName:String = "RecommenderModel"
     private var myRecommender:Recommender! = Recommender()
     private var detectionOverlay: CALayer! = nil
   
