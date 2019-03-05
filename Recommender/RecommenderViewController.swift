@@ -2,8 +2,8 @@
 //  RecommenderViewController.swift
 //  Recommender
 //
-//  Created by Kevin Musselman on 1/7/19.
-//  Copyright © 2019 Kevin Musselman. All rights reserved.
+//  Created by Skafos.ai on 1/7/19.
+//  Copyright © 2019 Metis Machine, LLC. All rights reserved.
 //
 
 import UIKit
