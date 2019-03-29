@@ -6,5 +6,5 @@ target 'Recommender' do
   use_frameworks!
 
   pod 'SnapKit'
-  pod 'Skafos', '2.5.0'
+  pod 'Skafos', '2.5.7'
 end

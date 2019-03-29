@@ -29,7 +29,26 @@ class RecommenderViewController: ViewController {
   
     override func viewDidLoad() {
       super.viewDidLoad()
-
+        
+      // Skafos load cached asset
+      // If you pass in a tag, Skafos will make a network request to fetch the asset with that tag
+      Skafos.load(asset: self.assetName, tag: "latest") { (error, asset) in
+        // Log the asset in the console
+        console.info(asset)
+        guard error == nil else {
+            console.error("Skafos load asset error: \(String(describing: error))")
+            return
+        }
+        guard let model = asset.model else {
+            debugPrint("No model available in the asset")
+            return
+        }
+        // Assign model to the recommender class
+        self.myRecommender.model = model
+        
+      }
+        
+        
       if let contents = readDataFromCSV(fileName: "movies", fileType: "csv") {
         self.movies = csv(data: contents)
       }
@@ -37,8 +56,10 @@ class RecommenderViewController: ViewController {
       self.button.addTarget(self, action: #selector(recommendButtonAction(_:)), for: .touchUpInside)
 
       /***
-       Receive Notification When New Model Has Been Downloaded And Compiled
-       ***/
+       Listen for changes in an asset with the given name. A notification is triggered anytime an
+       asset is downloaded from the servers. This can happen in response to a push notification
+       or when you manually call Skafos.load with a tag like above.      
+      ***/
         
         NotificationCenter.default.addObserver(self, selector: #selector(RecommenderViewController.reloadModel(_:)), name: Skafos.Notifications.assetUpdateNotification(assetName), object: nil)
   
@@ -48,13 +69,18 @@ class RecommenderViewController: ViewController {
 
 
     @objc func reloadModel(_ notification:Notification) {
-        debugPrint("Model Reloaded")
-        debugPrint(notification)
         Skafos.load(asset: self.assetName) { (error, asset) in
-            guard let model = asset.model else {
-                debugPrint("No model available")
+            // Log the asset in the console
+            console.info(asset)
+            guard error == nil else {
+                console.error("Skafos load asset error: \(String(describing: error))")
                 return
             }
+            guard let model = asset.model else {
+                debugPrint("No model available in the asset")
+                return
+            }
+            // Assign model to the recommender class
             self.myRecommender.model = model
         }
     }
